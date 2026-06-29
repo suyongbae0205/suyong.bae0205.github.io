@@ -1,2 +1,129 @@
-# suyong.bae0205.github.io
-# 안녕하세요
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 메모장</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .btn-save {
+            background-color: #4CAF50;
+            color: white;
+            flex: 1;
+        }
+        .btn-save:hover {
+            background-color: #45a049;
+        }
+        .btn-clear {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-clear:hover {
+            background-color: #da190b;
+        }
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+            text-align: right;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 메모장</h1>
+    <textarea id="memoText" placeholder="여기에 메모를 입력하세요..."></textarea>
+    <div class="button-group">
+        <button class="btn-save" onclick="saveMemo()">저장하기</button>
+        <button class="btn-clear" onclick="clearMemo()">초기화</button>
+    </div>
+    <div id="statusMessage" class="status"></div>
+</div>
+
+<script>
+    const memoText = document.getElementById('memoText');
+    const statusMessage = document.getElementById('statusMessage');
+
+    // 페이지 로드 시 저장된 메모 불러오기
+    window.onload = function() {
+        const savedMemo = localStorage.getItem('my_simple_memo');
+        if (savedMemo) {
+            memoText.value = savedMemo;
+            showStatus('저장된 메모를 불러왔습니다.');
+        }
+    };
+
+    // 메모 저장
+    function saveMemo() {
+        localStorage.setItem('my_simple_memo', memoText.value);
+        showStatus('메모가 저장되었습니다. (브라우저를 닫아도 유지됩니다)');
+    }
+
+    // 메모 초기화
+    function clearMemo() {
+        if(confirm('정말 모든 메모를 지우시겠습니까?')) {
+            localStorage.removeItem('my_simple_memo');
+            memoText.value = '';
+            showStatus('메모가 초기화되었습니다.');
+        }
+    }
+
+    // 상태 메시지 표시
+    function showStatus(message) {
+        statusMessage.textContent = message;
+        setTimeout(() => {
+            if(statusMessage.textContent === message) {
+                statusMessage.textContent = '';
+            }
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
